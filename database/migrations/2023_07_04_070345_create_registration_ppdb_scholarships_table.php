@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('registration_ppdb_scholarships', function (Blueprint $table) {
             $table->id();
-            $table->string('username')->nullable();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->foreignId('registration_ppdb_id');
+            $table->string('type_scholarship');
+            $table->year('year_start');
+            $table->year('year_finish');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('registration_ppdb_scholarships');
     }
 };
