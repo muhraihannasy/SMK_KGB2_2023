@@ -10,6 +10,9 @@ class Study extends Model
 {
     use HasFactory, SoftDeletes;
 
+
+
+
     protected $fillable = [
         'name'
     ];

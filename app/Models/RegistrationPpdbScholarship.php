@@ -10,6 +10,8 @@ class RegistrationPpdbScholarship extends Model
 {
     use HasFactory, SoftDeletes;
 
+
+
     protected $fillable = [
         'registration_ppdb_id',
         'type_scholarship',

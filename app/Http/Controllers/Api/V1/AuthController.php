@@ -2,16 +2,35 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+// Controller
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+
+// Traits
+use App\Traits\HttpResponseTrait;
+
+// Request
+use App\Http\Requests\RegisterRequest;
+
+// Iluminate
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+
+// Model
+use App\Models\User;
+use App\Models\DetailUser;
+use App\Models\PaymentRegistration;
+use App\Models\RegistrationPPDB;
+
+use Exception;
 
 class AuthController extends Controller
 {
+    use HttpResponseTrait;
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
     public function login()
@@ -23,6 +42,46 @@ class AuthController extends Controller
         }
 
         return $this->respondWithToken($token);
+    }
+
+    public function register(RegisterRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $user = User::create([
+                'fullname' => $request->fullname,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+
+            $detail_user = DetailUser::create([
+                'user_id' => $user->id,
+                'role_id' => 3,
+                'phone' =>  $request->phone,
+            ]);
+
+            $registration = RegistrationPPDB::create([
+                'user_id' => $user->id,
+                'competency_pick_1' => $request->competency_pick_1,
+                'competency_pick_2' => $request->competency_pick_2,
+                'competency_pick_3' => $request->competency_pick_3,
+                'from_school' => $request->from_school
+            ]);
+
+            $payment_registration = PaymentRegistration::create([
+                'registration_ppdb_id' => $registration->id,
+                'payment_amount' => '150000',
+                'status' => 1,
+            ]);
+
+            DB::commit();
+        } catch(Exception $e) {
+            DB::rollBack();
+            return $this->errorResponse($e->getMessage(), 400);
+        }
+
+        return $this->successReponse(null, 200);
     }
 
     public function me()

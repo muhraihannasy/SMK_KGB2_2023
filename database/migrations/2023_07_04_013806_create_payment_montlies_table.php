@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('payment_montlies', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid');
+
             $table->text('payment_proof')->nullable();
             $table->string('payment_amount');
             $table->enum('statu', [1, 2, 3]);

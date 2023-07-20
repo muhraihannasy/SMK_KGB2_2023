@@ -22,9 +22,27 @@ Route::group([
 
 ], function ($router) {
 
+    // AuthController
     Route::post('login', 'AuthController@login');
+    Route::post('register', 'AuthController@register');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
 
 });
+
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'student',
+    'namespace' => 'App\Http\Controllers\Api\V1\Student'
+
+], function ($router) {
+
+    // RegistrationPPDB Controller
+    Route::post('registration', 'RegistrationPPDBController@update');
+
+});
+
+
+

@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('registration_ppdb_achievements', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid');
+
             $table->foreignId('registration_ppdb_id');
             $table->string('name_achievement');
             $table->string('type_achievement');

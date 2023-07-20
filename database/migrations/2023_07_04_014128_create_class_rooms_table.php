@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('class_rooms', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid');
+
             $table->foreignId('competency_id');
             $table->enum('grade_level', ['X', 'XI', 'XII']);
             $table->string('name');

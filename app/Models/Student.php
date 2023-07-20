@@ -10,6 +10,9 @@ class Student extends Model
 {
     use HasFactory, SoftDeletes;
 
+
+
+
     protected $fillable = [
         'user_id',
         'payment_monthly_id',

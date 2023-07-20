@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Competency extends Model
 {
     use HasFactory, SoftDeletes;
+
+
+
     protected $fillable = [
         'name'
     ];

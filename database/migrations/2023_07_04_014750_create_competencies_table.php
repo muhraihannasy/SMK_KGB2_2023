@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('competencies', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid');
+
             $table->string('name')->unique();
             $table->timestamps();
             $table->softDeletes();

@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ClassRoom extends Model
 {
     use HasFactory, SoftDeletes;
+
+
+
     protected $fillable = [
         'competency_id',
         'grade_level',

@@ -4,8 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PaymentRegistration extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
+
+
+    protected $fillable = [
+        'registration_ppdb_id',
+        'payment_proof',
+        'payment_amount',
+        'status',
+    ];
 }

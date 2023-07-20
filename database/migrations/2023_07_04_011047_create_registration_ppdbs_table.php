@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('registration_ppdbs', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid');
             $table->foreignId('user_id');
-            $table->foreignId('payment_registration_id');
             $table->string('no_registration');
             $table->string('code_registration');
             $table->string('admin_name')->nullable();
@@ -84,7 +84,7 @@ return new class extends Migration
             $table->string('mother_income')->nullable();
 
             $table->string('batch')->nullable();
-            $table->enum('status', [1, 2, 3])->nullable();
+            $table->enum('status', [1, 2, 3])->nullable(); // 3 = sudah diterima, 2 = sedang proses, 1 = belum mengisi formulir
             $table->timestamps();
             $table->softDeletes();
         });

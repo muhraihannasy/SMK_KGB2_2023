@@ -24,7 +24,6 @@ class DetailUserFactory extends Factory
         return [
             'user_id' => User::factory(),
             'role_id' => $this->faker->randomElement([1, 2, 3 ,4]),
-            'fullname' => $this->faker->firstName() . " " . $this->faker->lastName(),
             'phone' => $this->faker->phoneNumber()
         ];
     }

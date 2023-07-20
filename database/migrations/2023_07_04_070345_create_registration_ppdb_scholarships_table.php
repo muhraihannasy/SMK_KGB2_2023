@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('registration_ppdb_scholarships', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid');
+
             $table->foreignId('registration_ppdb_id');
             $table->string('type_scholarship');
             $table->year('year_start');

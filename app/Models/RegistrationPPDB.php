@@ -10,6 +10,10 @@ class RegistrationPPDB extends Model
 {
     use HasFactory, SoftDeletes;
 
+
+
+    protected $table = 'registration_ppdbs';
+
     protected $fillable = [
         'user_id',
         'payment_registration_id',

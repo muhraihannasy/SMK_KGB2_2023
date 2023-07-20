@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('studies', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid');
+
             $table->string('name');
             $table->timestamps();
             $table->softDeletes();
