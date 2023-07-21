@@ -59,7 +59,7 @@ return new class extends Migration
             $table->enum('receiver_kps', ['Ya', 'Tidak'])->nullable();
             $table->string('no_kps')->nullable();
             $table->text('image_kps')->nullable();
-            $table->string('receiver_kip')->nullable();
+            $table->enum('receiver_kip', ['Ya', 'Tidak'])->nullable();
             $table->string('name_kip')->nullable();
             $table->string('reason_kip')->nullable();
             $table->text('image_kip')->nullable();
@@ -84,7 +84,7 @@ return new class extends Migration
             $table->string('mother_income')->nullable();
 
             $table->string('batch')->nullable();
-            $table->enum('status', [1, 2, 3])->nullable(); // 3 = sudah diterima, 2 = sedang proses, 1 = belum mengisi formulir
+            $table->enum('status', [1, 2, 3])->default(1)->nullable(); // 3 = sudah diterima, 2 = sedang proses, 1 = belum mengisi formulir
             $table->timestamps();
             $table->softDeletes();
         });

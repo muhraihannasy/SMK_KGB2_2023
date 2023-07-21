@@ -19,7 +19,7 @@ class Student extends Model
         'competency_id',
         'gender',
         'religion',
-        'religion',
+        'religion', 
         'birth_place',
         'birth_date',
         'birth_date',

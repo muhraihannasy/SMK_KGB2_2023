@@ -79,4 +79,9 @@ class RegistrationPPDB extends Model
         'batch',
         'status',
     ];
+
+    public function getRouteKeyName(): string
+    {
+        return 'uuid';
+    }
 }

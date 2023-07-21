@@ -33,14 +33,31 @@ Route::group([
 
 Route::group([
 
-    'middleware' => 'api',
+    'middleware' => ['api', 'isLoginWithApi'],
     'prefix' => 'student',
     'namespace' => 'App\Http\Controllers\Api\V1\Student'
 
 ], function ($router) {
 
     // RegistrationPPDB Controller
-    Route::post('registration', 'RegistrationPPDBController@update');
+    Route::get('registration', 'RegistrationPPDBController@index');
+    Route::put('registration', 'RegistrationPPDBController@update');
+
+});
+
+
+Route::group([
+
+    'middleware' => ['api', 'isLoginWithApi'],
+    'prefix' => 'admin',
+    'namespace' => 'App\Http\Controllers\Api\V1\Admin'
+
+], function ($router) {
+
+    // RegistrationPPDB Controller
+    Route::get('registration', 'RegistrationPPDBController@index');
+    Route::get('registration/{registration}', 'RegistrationPPDBController@show');
+    Route::put('registration/{registration}/change_status', 'RegistrationPPDBController@changeStatus');
 
 });
 

@@ -25,7 +25,15 @@ class RegistrationPPDBController extends Controller
     use HttpResponseTrait;
 
     protected $table = RegistrationPPDB::class;
-    protected $userIsLogin = Auth::user()->id;
+
+    public function index()
+    {
+        $registration = $this->table::where('user_id', $this->getUserIsLogin())
+                        ->get()
+                        ->first();
+
+        return $this->successReponse($registration, 200);
+    }
 
 
     public function update(RegistrationStudentPPDBUpdate $request)
@@ -33,12 +41,12 @@ class RegistrationPPDBController extends Controller
         try {
             DB::beginTransaction();
 
-            $registration = $this->table::find($this->userIsLogin);
+            $registration = $this->table::where('user_id', $this->getUserIsLogin());
             $registrationData = $request->all();
 
             // Bikin Table Gelombang, dan dapatkan value aktiv;
             $registrationData['batch'] = "";
-            $registrationData['status'] = 1;
+            $registrationData['status'] = 2;
 
             $registration->update($registrationData);
 
@@ -48,6 +56,11 @@ class RegistrationPPDBController extends Controller
             $this->errorResponse($e->getMessage(), 500);
         }
 
-        return $this->successReponse($registration, 200);
+        return $this->successReponse(null, 200);
+    }
+
+    public function getUserIsLogin()
+    {
+        return Auth::user()->id;
     }
 }
