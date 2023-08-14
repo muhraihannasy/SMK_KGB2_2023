@@ -17,7 +17,7 @@ return new class extends Migration
 
             $table->text('payment_proof')->nullable();
             $table->string('payment_amount');
-            $table->enum('statu', [1, 2, 3]);
+            $table->enum('status', [1, 2, 3]);
             $table->timestamps();
             $table->softDeletes();
         });

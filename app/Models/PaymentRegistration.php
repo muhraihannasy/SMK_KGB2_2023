@@ -12,7 +12,6 @@ class PaymentRegistration extends Model
 
 
     protected $fillable = [
-        'registration_ppdb_id',
         'payment_proof',
         'payment_amount',
         'status',

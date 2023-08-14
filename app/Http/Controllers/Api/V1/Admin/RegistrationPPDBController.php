@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api\V1\Admin;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 // Controller
 use App\Http\Controllers\Controller;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Controller;
 // Models
 use App\Models\RegistrationPPDB;
 use App\Models\Student;
+use App\Models\User;
 
 // Trait
 use App\Traits\HttpResponseTrait;
@@ -22,6 +24,9 @@ class RegistrationPPDBController extends Controller
     use HttpResponseTrait;
 
     protected $table = RegistrationPPDB::class;
+    protected $table_second = Student::class;
+    protected $table_third = User::class;
+    protected $table_third = User::class;
 
     public function index()
     {
@@ -35,58 +40,54 @@ class RegistrationPPDBController extends Controller
         return $this->successReponse($registration, 200);
     }
 
-    public function changeStatus(Request $request, RegistrationPPDB $registration)
+    public function store(Request $request)
     {
-        try {
-            DB::beginTransaction();
+        $admin_name = Auth::user()->fullname;
 
-            $registration->status = $request->status;
-            $registration->save();
+        $user = $this->$table_third::create([
+            'fullname' => $request->fullname,
+            'email' => $request->email,
+            'password' => $request->password
+        ]);
 
-            $this->updateStudent($registration);
+        $payment_registration = $this->$table_third::create([
+            'fullname' => $request->fullname,
+            'email' => $request->email,
+            'password' => $request->password
+        ]);
 
-            DB::commit();
-        } catch(QueryException $e) {
-            DB::rollBack();
-            $this->errorResponse($e->getMessage(), 500);
-        }
-
-        return $this->successReponse(null, 200);
-    }
-
-
-    public function updateStudent($registration)
-    {
-        Student::create([
-            'user_id' => $registration->user_id,
-            'payment_monthly_id' => $registration->,
-            'competency_id' => $registration->,
-            'gender' => $registration->,
-            'religion' => $registration->,
-            'religion' => $registration->,
-            'birth_place' => $registration->,
-            'birth_date' => $registration->,
-            'birth_date' => $registration->,
-            'address' => $registration->,
-            'nisn' => $registration->,
-            'nisn_image' => $registration->,
-            'kartu_keluarga_image' => $registration->,
-            'no_serial_skhus' => $registration->,
-            'no_serial_diploma' => $registration->,
-            'no_examinee' => $registration->,
-            'class_pick' => $registration->,
-            'extracurricular' => $registration->,
-            'no_kks' => $registration->,
-            'image_kks' => $registration->,
-            'receiver_kps' => $registration->,
-            'no_kps' => $registration->,
-            'image_kps' => $registration->,
-            'receiver_kip' => $registration->,
-            'name_kip' => $registration->,
-            'reason_kip' => $registration->,
-            'image_kip' => $registration->,
-            'academic_year' => $registration->,
-            'status' => $registration->,
+        $this->table::create([
+            'user_id' => $user->id,
+            'admin_name' => $admin_name,
+            'type_registration' => $request->type,
+            'gender' => $request->type_registration,
+            'religion' => $request->religion,
+            'birth_place' => $request->birth_place,
+            'birth_date' => $request->birth_date,
+            'address' => $request->address_combine,
+            'nisn' => $request->nisn,
+            'nisn_image' => $request->,
+            'kartu_keluarga_image' => $request->,
+            'no_serial_skhus' => $request->,
+            'no_serial_diploma' => $request->,
+            'no_examinee' => $request->no_examinee,
+            'competency_pick_1' => $request->competency_pick_1,
+            'competency_pick_2' => $request->competency_pick_2,
+            'competency_pick_3' => $request->competency_pick_3,
+            'extracurricular_1' => $request->extracurricular_1,
+            'extracurricular_2' => $request->extracurricular_2,
+            'no_kks' => $request->no_kks ?? null,
+            'image_kks' => $request->image_kks ?? null,
+            'receiver_kps' => $request->receiver_kps ?? null,
+            'no_kps' => $request->no_kps ?? null,
+            'image_kps' => $request->image_kps ?? null,
+            'receiver_kip' => $request->receiver_kip ?? null,
+            'no_kip' => $request->no_kip ?? null,
+            'name_kip' => $request->name_kip ?? null,
+            'reason_kip' => $request->reason_kip ?? null,
+            'image_kip' => $request->image_kip ?? null,
+            'batch' => $request->,
+            'status' => 2,
         ]);
     }
 

@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('payment_registrations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('registration_ppdb_id');
             $table->uuid('uuid');
             $table->text('payment_proof')->nullable();
             $table->string('payment_amount');

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->uuid('uuid');
 
             $table->foreignId('registration_ppdb_id');
-            $table->string('type_scholarship');
+            $table->string('type');
             $table->year('year_start');
             $table->year('year_finish');
             $table->timestamps();

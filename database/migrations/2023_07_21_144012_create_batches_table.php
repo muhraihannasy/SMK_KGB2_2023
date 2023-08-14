@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('batches', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->enum('status', [0, 1])->default(0); // 1 = active , 0 = non active
             $table->timestamps();
         });
     }

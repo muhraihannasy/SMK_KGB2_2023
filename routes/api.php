@@ -58,6 +58,7 @@ Route::group([
     Route::get('registration', 'RegistrationPPDBController@index');
     Route::get('registration/{registration}', 'RegistrationPPDBController@show');
     Route::put('registration/{registration}/change_status', 'RegistrationPPDBController@changeStatus');
+    Route::post('registration', 'RegistrationPPDBController@store');
 
 });
 

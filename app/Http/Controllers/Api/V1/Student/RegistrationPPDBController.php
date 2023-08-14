@@ -36,6 +36,26 @@ class RegistrationPPDBController extends Controller
     }
 
 
+    public function changeStatus(Request $request, RegistrationPPDB $registration)
+    {
+        try {
+            DB::beginTransaction();
+
+            $registration->status = $request->status;
+            $registration->save();
+
+            $this->updateStudent($registration);
+
+            DB::commit();
+        } catch(QueryException $e) {
+            DB::rollBack();
+            $this->errorResponse($e->getMessage(), 500);
+        }
+
+        return $this->successReponse(null, 200);
+    }
+
+
     public function update(RegistrationStudentPPDBUpdate $request)
     {
         try {

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('registration_ppdbs', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
+            $table->foreignId('payment_registration_id')->nullable();
             $table->foreignId('user_id');
             $table->string('no_registration');
             $table->string('code_registration');

@@ -16,10 +16,10 @@ return new class extends Migration
             $table->uuid('uuid');
 
             $table->foreignId('registration_ppdb_id');
-            $table->string('name_achievement');
-            $table->string('type_achievement');
-            $table->year('year_achievement');
-            $table->string('level_achievement', 50);
+            $table->string('name');
+            $table->string('type');
+            $table->year('year');
+            $table->string('level', 50);
             $table->string('organizer');
             $table->timestamps();
         });
