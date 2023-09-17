@@ -26,10 +26,8 @@ return new class extends Migration
             $table->string('from_school');
             $table->string('weigth')->nullable();
             $table->string('height')->nullable();
-            $table->string('amount_siblings', 10)->nullable();
             $table->enum('gender', ['Laki-Laki', 'Perempuan'])->nullable();
             $table->string('special_needs')->nullable();
-            $table->string('order_family', 10)->nullable();
             $table->enum('religion', ['Islam', 'Kristen/Protestan', 'Khatolik', 'Hindu', 'Budha', 'Khonghucu'])->nullable();
             $table->string('birth_place', 100)->nullable();
             $table->date('birth_date')->nullable();
@@ -38,6 +36,7 @@ return new class extends Migration
             // ================= Biodata ==================== //
 
             $table->string('nisn')->nullable();
+            $table->string('nik')->nullable();
             $table->text('nisn_image')->nullable();
             $table->text('kartu_keluarga_image')->nullable();
             $table->string('no_serial_skhus')->nullable();
@@ -61,6 +60,7 @@ return new class extends Migration
             $table->string('no_kps')->nullable();
             $table->text('image_kps')->nullable();
             $table->enum('receiver_kip', ['Ya', 'Tidak'])->nullable();
+            $table->string('no_kip')->nullable();
             $table->string('name_kip')->nullable();
             $table->string('reason_kip')->nullable();
             $table->text('image_kip')->nullable();

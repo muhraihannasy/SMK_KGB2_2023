@@ -10,8 +10,6 @@ class DetailUser extends Model
 {
     use HasFactory, SoftDeletes;
 
-
-
     protected $fillable = [
         'user_id',
         'role_id',

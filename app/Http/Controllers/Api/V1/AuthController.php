@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 
 // Model
 use App\Models\User;
+use App\Models\Role;
 use App\Models\DetailUser;
 use App\Models\PaymentRegistration;
 use App\Models\RegistrationPPDB;
@@ -30,7 +31,7 @@ class AuthController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('isLoginWithApi', ['except' => ['login', 'register']]);
     }
 
     public function login()
@@ -103,10 +104,25 @@ class AuthController extends Controller
 
     protected function respondWithToken($token)
     {
+         $userIsLogin = Auth::user();
+         $userIsLogin->load('detail_user');
+         $role = Role::find($userIsLogin->detail_user->role_id);
+
+
+
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => Auth::factory()->getTTL() * 60
+            'expires_in' => Auth::factory()->getTTL() * 60,
+            "user" => [
+                'fullname' => $userIsLogin->fullname,
+                'email' => $userIsLogin->email,
+                'photo' => $userIsLogin->detail_user->photo,
+                'role' => [
+                    'name' => $role->name,
+                    'menu_permission' => $role->menu_permission
+                ]
+            ],
         ]);
     }
 }

@@ -17,7 +17,7 @@ class RegistrationPPDBObserver
 
         $registrationPpdb->uuid = Uuid::uuid4();
         $registrationPpdb->no_registration = date("Y") . str_pad($count_registration_ppdb + 1, 6, "0", STR_PAD_LEFT);
-        $registrationPpdb->code_registration =   $code_registration;
+        $registrationPpdb->code_registration = $code_registration;
     }
 
     /**

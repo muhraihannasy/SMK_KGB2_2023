@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('type');
             $table->year('year_start');
             $table->year('year_finish');
+            $table->longText('description');
             $table->timestamps();
             $table->softDeletes();
         });

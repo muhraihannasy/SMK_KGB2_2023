@@ -15,7 +15,7 @@ class RegistrationPpdbScholarship extends Model
     protected $fillable = [
         'registration_ppdb_id',
         'type_scholarship',
-        'type_scholarship',
+        'description',
         'year_start',
         'year_finish'
     ];

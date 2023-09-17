@@ -10,8 +10,6 @@ class RegistrationPPDB extends Model
 {
     use HasFactory, SoftDeletes;
 
-
-
     protected $table = 'registration_ppdbs';
 
     protected $fillable = [
@@ -46,6 +44,7 @@ class RegistrationPPDB extends Model
 
         // ============ Berkas ============ //
         'nisn',
+        'nik',
         'nisn_image',
         'kartu_keluarga_image',
         'no_serial_skhus',
@@ -57,6 +56,7 @@ class RegistrationPPDB extends Model
         'no_kps',
         'image_kps',
         'receiver_kip',
+        'no_kip',
         'name_kip',
         'reason_kip',
         'image_kip',

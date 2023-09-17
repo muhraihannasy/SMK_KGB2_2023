@@ -11,7 +11,6 @@ class RegistrationPpdbAchievement extends Model
     use HasFactory, SoftDeletes;
 
 
-
     protected $fillable = [
         'registration_ppdb_id',
         'name_achievement',

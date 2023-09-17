@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UploadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +17,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([
 
-    'middleware' => 'api',
     'prefix' => 'auth',
     'namespace' => 'App\Http\Controllers\Api\V1'
 
@@ -61,6 +61,9 @@ Route::group([
     Route::post('registration', 'RegistrationPPDBController@store');
 
 });
+
+Route::post('berkas/upload', [UploadController::class, "store"])->middleware('isLoginWithApi');
+
 
 
 
