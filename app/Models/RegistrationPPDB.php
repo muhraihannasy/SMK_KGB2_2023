@@ -24,7 +24,6 @@ class RegistrationPPDB extends Model
         'from_school',
         'weigth',
         'height',
-        'amount_siblings',
         'gender',
         'special_needs',
         'order_family',
@@ -79,6 +78,10 @@ class RegistrationPPDB extends Model
         'batch',
         'status',
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 
     public function getRouteKeyName(): string
     {

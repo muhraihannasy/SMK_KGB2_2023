@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+// Request
+use App\Http\Requests\StorePPDBAdmin;
+
+// Resource
+use App\Http\Resources\RegistrationListAdmin;
+
 // Controller
 use App\Http\Controllers\Controller;
 use App\Models\PaymentRegistration;
@@ -30,7 +36,7 @@ class RegistrationPPDBController extends Controller
 
     public function index()
     {
-        $registration = $this->table::all();
+        $registration = RegistrationListAdmin::collection($this->table::with('user')->get());
         return $this->successReponse($registration, 200);
     }
 
@@ -40,11 +46,10 @@ class RegistrationPPDBController extends Controller
         return $this->successReponse($registration, 200);
     }
 
-    public function store(Request $request)
+    public function store(StorePPDBAdmin $request)
     {
         $admin_name = Auth::user()->fullname;
         $user_id = Auth::user()->id;
-
 
         try {
             DB::beginTransaction();
@@ -55,15 +60,8 @@ class RegistrationPPDBController extends Controller
                 'password' => $request->password
             ]);
 
-            $payment_registration = PaymentRegistration::create([
-                'fullname' => $request->fullname,
-                'email' => $request->email,
-                'password' => $request->password
-            ]);
-
             $registration_ppdb = $this->table::create([
-                'user_id' => $user_id,
-                'payment_registration_id' => $payment_registration,
+                'user_id' => $user->id,
                 'admin_name' => $admin_name,
                 'type_registration' => $request->type_registration,
                 'gender' => $request->gender,
@@ -74,7 +72,7 @@ class RegistrationPPDBController extends Controller
                 'religion' => $request->religion,
                 'birth_place' => $request->birth_place,
                 'birth_date' => $request->birth_date,
-                'address' => $request->address,
+                'address' => $request->address_combine,
 
                 'nisn' => $request->nisn,
                 'nik' => $request->nik,
@@ -125,30 +123,38 @@ class RegistrationPPDBController extends Controller
                 'status' => 2,
             ]);
 
-            foreach ($request->scholarships as $scholarship) {
-                RegistrationPpdbScholarship::create([
-                    'registration_ppdb_id' => $registration_ppdb->id,
-                    'type' => $scholarship['type_scholarship'],
-                    'year_start' => $scholarship['year_start'],
-                    'year_finish' => $scholarship['year_finish'],
-                    'description' => $scholarship['description'],
-                ]);
+            if(!is_null($request->scholarships)) {
+                foreach ($request->scholarships as $scholarship) {
+                        RegistrationPpdbScholarship::create([
+                            'registration_ppdb_id' => $registration_ppdb->id,
+                            'type' => $scholarship['type_scholarship'],
+                            'year_start' => $scholarship['year_start'],
+                            'year_finish' => $scholarship['year_finish'],
+                            'description' => $scholarship['description'],
+                        ]);
+                    }
             }
 
-            foreach ($request->achievements as $achievement) {
-                RegistrationPpdbAchievement::create([
-                    'registration_ppdb_id' => $registration_ppdb->id,
-                    'type' => $achievement['type'],
-                    'name' => $achievement['name'],
-                    'year' => $achievement['year'],
-                    'level' => $achievement['level'],
-                    'organizer' => $achievement['organizer'],
-                ]);
+               if(!is_null($request->achievements)) {
+                foreach ($request->achievements as $achievement) {
+                    RegistrationPpdbAchievement::create([
+                        'registration_ppdb_id' => $registration_ppdb->id,
+                        'type' => $achievement['type'],
+                        'name' => $achievement['name'],
+                        'year' => $achievement['year'],
+                        'level' => $achievement['level'],
+                        'organizer' => $achievement['organizer'],
+                    ]);
+                }
             }
+
 
             DB::commit();
+             return $this->successReponse("" , 200);
+
         } catch(QueryException $e) {
             DB::rollBack();
+             return $this->errorResponse($e->getMessage(), 500);
         }
     }
 }
