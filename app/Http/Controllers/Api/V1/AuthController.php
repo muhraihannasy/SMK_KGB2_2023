@@ -42,6 +42,35 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
+        $user = User::where('email', request('email'))->with(['detail_user'])->get()->first();
+
+        if($user->detail_user->role_id === 4) {
+            $registraiton = RegistrationPPDB::where('user_id', $user->id)->get(['id', 'uuid', 'payment_registration_id', 'code_registration'])->first();
+            $payment_registration = PaymentRegistration::find($registraiton->payment_registration_id);
+            $payment_status = $payment_registration->status;
+
+            // 1 = "Not Pay"
+            // 2 = "Process Pay"
+            // 3 = "Payment Success"
+            $response = [
+                1 => [
+                    'registration_uuid' => $registraiton->uuid,
+                    'code_registration' => $registraiton->code_registration,
+                    'status_payment' => $payment_status
+                ],
+                2 => [
+                    'payment_uuid' => $payment_registration->uuid,
+                    'status_payment' => $payment_status
+                ],
+            ];
+
+            if($payment_status === "3") {
+                return $this->respondWithToken($token);
+            }
+
+            return $this->successReponse($response[$payment_status],  200);
+        }
+
         return $this->respondWithToken($token);
     }
 
@@ -58,23 +87,25 @@ class AuthController extends Controller
 
             $detail_user = DetailUser::create([
                 'user_id' => $user->id,
-                'role_id' => 3,
+                'role_id' => 4,
                 'phone' =>  $request->phone,
+            ]);
+
+            $payment_registration = PaymentRegistration::create([
+                'payment_amount' => '150000',
+                'status' => 1,
             ]);
 
             $registration = RegistrationPPDB::create([
                 'user_id' => $user->id,
+                'payment_registration_id' => $payment_registration->id,
                 'competency_pick_1' => $request->competency_pick_1,
                 'competency_pick_2' => $request->competency_pick_2,
                 'competency_pick_3' => $request->competency_pick_3,
                 'from_school' => $request->from_school
             ]);
 
-            $payment_registration = PaymentRegistration::create([
-                'registration_ppdb_id' => $registration->id,
-                'payment_amount' => '150000',
-                'status' => 1,
-            ]);
+
 
             DB::commit();
         } catch(Exception $e) {
@@ -82,7 +113,7 @@ class AuthController extends Controller
             return $this->errorResponse($e->getMessage(), 400);
         }
 
-        return $this->successReponse(null, 200);
+        return $this->successReponse(true, 200);
     }
 
     public function me()

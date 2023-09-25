@@ -50,4 +50,9 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(DetailUser::class);
     }
 
+    public function registration_ppdb() {
+        return $this->hasOne(RegistrationPPDB::class);
+    }
+
+
 }
